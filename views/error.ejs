@@ -1,0 +1,30 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" integrity="sha512-9xKTRVabjVeZmc+GUW8GgSmcREDunMM+Dt/GrzchfN8tkwHizc5RP4Ok/MXFFy5rIjJjzhndFScTceq5e6GvVQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <%- include("./includes/navbar.ejs") %>
+
+    <div class="bigcontainer">
+      <div class="flex justify-center mt-4">
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 w-full md:w-6/12" role="alert">
+          <p class="font-semibold text-lg"><%= message %></p>
+        </div>
+      </div>
+      
+    </div>
+
+ 
+    <script src="js/navbarToggle.js"></script>
+  </body>
+</html>
+  

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <!-- Container -->
+  <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6">
+    <%- include("../includes/flash.ejs") %>
+    <!-- Heading -->
+    <h2 class="text-center text-2xl font-bold text-gray-700">Login</h2>
+    <p class="text-center text-gray-500">Sign in to your account</p>
+
+    <!-- Login Form -->
+    <form method="post" action="/login" id="loginForm" class="space-y-4">
+      <div>
+        <label for="username" class="block text-gray-700 font-medium">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          class="w-full mt-1 px-4 py-2 border rounded focus:ring-2 focus:ring-blue-300 focus:outline-none"
+        />
+        <p id="usernameError" class="text-red-500 text-sm hidden"></p>
+      </div>
+      <div>
+        <label for="password" class="block text-gray-700 font-medium">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          class="w-full mt-1 px-4 py-2 border rounded focus:ring-2 focus:ring-blue-300 focus:outline-none"
+        />
+        <p id="passwordError" class="text-red-500 text-sm hidden"></p>
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
+      >
+        Login
+      </button>
+    </form>
+
+    <!-- Signup Link -->
+    <p class="text-center text-gray-500">
+      Don't have an account? <a href="/signup" class="text-blue-500">Sign up here</a>
+    </p>
+  </div>
+
+  <script>
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        const usernameError = document.getElementById("usernameError");
+        const passwordError = document.getElementById("passwordError");
+
+        // Reset error messages
+        usernameError.textContent = "";
+        passwordError.textContent = "";
+        usernameError.classList.add("hidden");
+        passwordError.classList.add("hidden");
+
+        let hasError = false;
+
+        if (username === "") {
+          usernameError.textContent = "Username cannot be empty.";
+          usernameError.classList.remove("hidden");
+          document.getElementById("username").classList.add("border-red-500");
+          hasError = true;
+        } else {
+          document.getElementById("username").classList.remove("border-red-500");
+        }
+
+        if (password === "") {
+          passwordError.textContent = "Password cannot be empty.";
+          passwordError.classList.remove("hidden");
+          document.getElementById("password").classList.add("border-red-500");
+          hasError = true;
+        } else if (password.length < 5) {
+          passwordError.textContent = "Password must be at least 5 characters long.";
+          passwordError.classList.remove("hidden");
+          document.getElementById("password").classList.add("border-red-500");
+          hasError = true;
+        } else {
+          document.getElementById("password").classList.remove("border-red-500");
+        }
+
+        if (!hasError) {
+          // Submit form if there are no errors
+          document.getElementById("loginForm").submit();
+        }
+      });
+  </script>
+</body>
+</html>

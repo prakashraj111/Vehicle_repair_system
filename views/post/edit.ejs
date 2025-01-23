@@ -1,0 +1,182 @@
+<% layout("layouts/boilerplate") -%>
+<body class="bg-gray-100">
+  <div class="flex items-center justify-center mt-1">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">
+        Submit Information
+      </h2>
+      <i class="mb-4">Note: Fill all the fields carefully!</i>
+
+      <form method="POST" action="/posts/<%= post._id %>?_method=PUT" class="space-y-4" id="updateForm">
+        <!-- Title Field -->
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="post[title]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value="<%= post.title %>"
+          />
+          <p class="text-red-500 text-sm mt-1 hidden" id="titleError">Title is required.</p>
+        </div>
+
+        <!-- Contact Number Field -->
+        <div>
+          <label for="contact" class="block text-sm font-medium text-gray-700">Contact no</label>
+          <input
+            type="number"
+            id="contact"
+            name="post[contact]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter contact no"
+            value="<%= post.contact %>"
+          />
+          <p class="text-red-500 text-sm mt-1 hidden" id="contactError">Contact number must be valid.</p>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="post[email]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter email"
+            value="<%= post.email %>"
+          />
+          <p class="text-red-500 text-sm mt-1 hidden" id="emailError">Please enter a valid email address.</p>
+        </div>
+
+        <!-- Availability Field -->
+        <div>
+          <label for="Availability">Availability</label>
+          <label class="mx-2">
+            <input type="radio" name="post[available]" value="true" checked />
+            Yes
+          </label>
+          <label>
+            <input type="radio" name="post[available]" value="false" />
+            No
+          </label>
+          <p class="text-red-500 text-sm mt-1 hidden" id="availabilityError">Please select availability.</p>
+        </div>
+
+        <!-- Description Field -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            id="description"
+            name="post[description]"
+            rows="4"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter description"
+          ><%= post.description %></textarea>
+          <p class="text-red-500 text-sm mt-1 hidden" id="descriptionError">Description is required.</p>
+        </div>
+
+        <!-- Image Upload Field -->
+        <div>
+          <img class="w-40" src="<%= originalImageUrl %>" alt="" />
+          <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+          <input
+            type="file"
+            id="image"
+            name="post[image]"
+            accept="image/*"
+            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+          />
+          <p class="text-red-500 text-sm mt-1 hidden" id="imageError">Image is required.</p>
+        </div>
+
+        <!-- Location Field -->
+        <div>
+          <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+          <input
+            type="text"
+            id="location"
+            name="post[location]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter location"
+            value="<%= post.location %>"
+          />
+          <p class="text-red-500 text-sm mt-1 hidden" id="locationError">Location is required.</p>
+        </div>
+
+        <!-- Country Field -->
+        <div>
+          <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+          <select
+            id="country"
+            name="post[country]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="">Select a country</option>
+            <option value="Nepal" selected>Nepal</option>
+          </select>
+          <p class="text-red-500 text-sm mt-1 hidden" id="countryError">Please select a country.</p>
+        </div>
+
+        <!-- Category Field -->
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700">Garage type</label>
+          <select
+            id="category"
+            name="post[category]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="" disabled>Select Category</option>
+            <option value="Bike" <%= post.category === 'Bike' ? 'selected' : '' %>>Bike</option>
+            <option value="Bus" <%= post.category === 'Bus' ? 'selected' : '' %>>Bus</option>
+            <option value="Bicycle" <%= post.category === 'Bicycle' ? 'selected' : '' %>>Bicycle</option>
+          </select>
+          <p class="text-red-500 text-sm mt-1 hidden" id="categoryError">Please select a category.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("updateForm").addEventListener("submit", function (e) {
+      let isValid = true;
+
+      const fields = [
+        { id: "title", error: "titleError" },
+        { id: "contact", error: "contactError", condition: (value) => value.length >= 8 },
+        { id: "email", error: "emailError", condition: (value) => /^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(value) },
+        { id: "description", error: "descriptionError" },
+        { id: "location", error: "locationError" },
+        { id: "country", error: "countryError" },
+        { id: "category", error: "categoryError" },
+        { id: "image", error: "imageError" }
+      ];
+
+      fields.forEach(({ id, error, condition }) => {
+        const field = document.getElementById(id);
+        const errorElement = document.getElementById(error);
+        const value = field?.value.trim() || "";
+
+        if (!value || (condition && !condition(value))) {
+          isValid = false;
+          errorElement.classList.remove("hidden");
+        } else {
+          errorElement.classList.add("hidden");
+        }
+      });
+
+      if (!isValid) e.preventDefault();
+    });
+  </script>
+</body>
+

@@ -1,0 +1,61 @@
+<% layout("layouts/boilerplate") -%>
+<body class="bg-gray-100">
+  <h2 class="text-2xl font-semibold text-gray-800 text-center mt-6">
+    Showing Results for Garage Type: <span class="font-bold text-blue-500"><%= selectedOption %></span> 
+    and Location: <span class="font-bold text-blue-500"><%= searchInput %></span>
+</h2>
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">       
+            <% if (posts.length > 0) { %>   
+            <% posts.forEach(post => { %>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <!-- Image Section -->
+                <img src="<%= post.image.url %>" alt="Service" class="w-full h-48 object-cover">
+                
+                <!-- Content Section -->
+                <div class="p-4">
+                    <!-- Title with Category Icon and Light Indicator -->
+                    <div class="flex items-center justify-between">
+                        <!-- Left: Title and Icon -->
+                        <h3 class="text-lg font-semibold flex items-center">
+                            <% if(post.category === 'Bike') { %>
+                                <i class="fas fa-motorcycle text-blue-500 mr-2"></i>
+                            <% } else if(post.category === 'Bus') { %>
+                                <i class="fas fa-bus text-green-500 mr-2"></i>
+                            <% } else { %>
+                                <i class="fas fa-bicycle text-yellow-500 mr-2"></i>
+                            <% } %>
+                            <%= post.title %>
+                        </h3>
+  
+                        <!-- Right: Light Indicator -->
+                        <span>
+                          <span class="inline-block w-4 h-4 rounded-full
+                            <% if(post.available) { %>
+                              bg-green-500 animate-ping
+                            <% } else { %>
+                              bg-black
+                            <% } %>">
+                          </span>
+                        </span>
+                    </div>
+  
+                    <!-- Other Post Details -->
+                    <p class="text-gray-700 mt-2"><%= post.country %></p>
+                    <p class="text-gray-700"><%= post.location %></p>
+  
+                    <!-- View More Link -->
+                    <a href="/posts/<%= post._id %>" class="mt-2 inline-block text-blue-500 hover:underline">
+                      View More Details
+                    </a>
+                </div>
+            </div>
+            <% }) %>
+            <% } else { %>
+                <p>No matching posts found.</p>
+             <% } %>
+        </div>
+    </div>
+  </body>
+
+

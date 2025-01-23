@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
+    <!-- Container -->
+    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6">
+      <%- include("../includes/flash.ejs") %>
+      <!-- Heading -->
+      <h2 class="text-center text-2xl font-bold text-gray-700">Sign Up</h2>
+      <p class="text-center text-gray-500">Create an account to get started</p>
+
+      <!-- Signup Form -->
+      <form method="post" action="/signup" id="signupForm" class="space-y-4">
+        <div>
+          <label for="username" class="block text-gray-700 font-medium"
+            >Username</label
+          >
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            class="w-full mt-1 px-4 py-2 border rounded focus:ring-2 focus:ring-blue-300 focus:outline-none"
+          />
+          <p id="usernameError" class="text-red-500 text-sm hidden"></p>
+        </div>
+        <div>
+          <label for="email" class="block text-gray-700 font-medium"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            class="w-full mt-1 px-4 py-2 border rounded focus:ring-2 focus:ring-blue-300 focus:outline-none"
+          />
+          <p id="emailError" class="text-red-500 text-sm hidden"></p>
+        </div>
+
+        <div>
+          <label for="password" class="block text-gray-700 font-medium"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            class="w-full mt-1 px-4 py-2 border rounded focus:ring-2 focus:ring-blue-300 focus:outline-none"
+          />
+          <p id="passwordError" class="text-red-500 text-sm hidden"></p>
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
+        >
+          Sign Up
+        </button>
+      </form>
+
+      <!-- Login Link -->
+      <p class="text-center text-gray-500">
+        Already have an account?
+        <a href="/login" class="text-blue-500">Login here</a>
+      </p>
+    </div>
+
+    <script>
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          const usernameError = document.getElementById("usernameError");
+          const emailError = document.getElementById("emailError");
+          const passwordError = document.getElementById("passwordError");
+
+          // Reset error messages
+          usernameError.textContent = "";
+          emailError.textContent = "";
+          passwordError.textContent = "";
+          usernameError.classList.add("hidden");
+          emailError.classList.add("hidden");
+          passwordError.classList.add("hidden");
+
+          let hasError = false;
+
+          if (username === "") {
+            usernameError.textContent = "Username cannot be empty.";
+            usernameError.classList.remove("hidden");
+            document.getElementById("username").classList.add("border-red-500");
+            hasError = true;
+          } else if (!/^[a-zA-Z]/.test(username)) {
+            usernameError.textContent = "Username must start with a letter.";
+            usernameError.classList.remove("hidden");
+            document.getElementById("username").classList.add("border-red-500");
+            hasError = true;
+          } else {
+            document
+              .getElementById("username")
+              .classList.remove("border-red-500");
+          }
+
+          if (email === "") {
+            emailError.textContent = "Email cannot be empty.";
+            emailError.classList.remove("hidden");
+            document.getElementById("email").classList.add("border-red-500");
+            hasError = true;
+          } else if (
+            !/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,3}$/.test(email)
+          ) {
+            emailError.textContent = "Invalid email format.";
+            emailError.classList.remove("hidden");
+            document.getElementById("email").classList.add("border-red-500");
+            hasError = true;
+          } else {
+            document.getElementById("email").classList.remove("border-red-500");
+          }
+
+          if (password === "") {
+            passwordError.textContent = "Password cannot be empty.";
+            passwordError.classList.remove("hidden");
+            document.getElementById("password").classList.add("border-red-500");
+            hasError = true;
+          } else if (password.length < 5) {
+            passwordError.textContent = "Password must be at least 5 characters long.";
+            passwordError.classList.remove("hidden");
+            document.getElementById("password").classList.add("border-red-500");
+            hasError = true;
+          } else {
+            document
+              .getElementById("password")
+              .classList.remove("border-red-500");
+          }
+
+          if (!hasError) {
+            // Submit form if there are no errors
+            document.getElementById("signupForm").submit();
+          }
+        });
+    </script>
+  </body>
+</html>

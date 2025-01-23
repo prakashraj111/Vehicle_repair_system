@@ -1,0 +1,69 @@
+<% layout("layouts/boilerplate") -%>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-4 py-8 my-14">
+    <div class="space-y-8">
+      <!-- Account Details -->
+      <section class="bg-white p-6 rounded-lg shadow-md">
+        <% if(currUser) { %>
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Account Details</h2>
+        <ul class="space-y-2">
+          <li><strong>Name:</strong> <%= currUser.username %></li>
+          <li><strong>Email:</strong> <%= currUser.email %></li>
+        </ul>
+        <% } %>
+        <% if(currUser) { %>
+        <button class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md">
+          <a href="/logout">Logout</a>
+        </button>
+        <% } %>
+      </section>
+
+      <!-- Order History -->
+      <section class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Manage Your Posts</h2>
+        <div class="overflow-x-auto">         
+          <table class="w-full text-left text-sm text-gray-600">
+            <% if(allPosts.length) { %>
+            <thead class="bg-gray-200 text-gray-700 uppercase text-xs">            
+              <tr>
+                <th class="py-2 px-4">Post ID</th>
+                <th class="py-2 px-4">Title</th>
+                <th class="py-2 px-4">Location</th>
+                <th class="py-2 px-4">Actions</th>
+              </tr>
+              <% } %>
+            </thead>
+            <tbody>
+              <% for(let post of allPosts) { %>            
+              <tr class="border-b">              
+                <td class="py-2 px-4"><%= post._id %></td>
+                <td class="py-2 px-4"><%= post.title %></td>
+                <td class="py-2 px-4"><%= post.location %></td>
+                <td class="py-2 px-4">
+                  <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-3 rounded-md">
+                    <a href="/posts/<%= post._id %>">view</a>
+                  </button>
+                  <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-3 rounded-md">
+                    <a href="/posts/<%= post._id %>/edit">Edit</a>
+                  </button>
+                  <form method="POST" action="/posts/<%= post._id %>?_method=DELETE" class="inline-block">
+                    <button class="bg-red-600 hover:bg-red-700 text-white font-semibold py-1 px-3 rounded-md">
+                      Delete
+                    </button>
+                  </form>                
+                </td>             
+              </tr>
+              <% } %>     
+            </tbody>
+          </table>
+        </div>
+        <button class="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md">
+          <a href="/posts/new">Create New Post</a>
+        </button>
+      </section>
+      
+
+    </div>
+  </main>
+</body>

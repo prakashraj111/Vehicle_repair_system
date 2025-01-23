@@ -1,0 +1,12 @@
+
+<% if(success && success.length) { %>
+    <p class="text-center bg-green-200 w-full p-2" style="animation: slideInFromLeft 1s ease-out;">
+      <%= success %>
+    </p>  
+<% } %>
+
+<% if(error && error.length) { %>
+    <p class="text-center bg-red-200 w-full p-2" style="animation: slideInFromLeft 1s ease-out;">
+      <%= error %>
+    </p>
+<% } %>

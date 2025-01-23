@@ -1,0 +1,145 @@
+<% layout("layouts/boilerplate") -%>
+<body class="bg-gray-100">
+
+  <!-- Main Container -->
+  <div class="flex-grow flex items-center justify-center py-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full mx-4 relative border border-gray-200">
+      
+    
+       <% if(currUser && currUser._id.equals(post.owner._id)) { %>
+      <div class="flex justify-between items-center mb-4">
+        <!-- Edit Button -->
+        <a href="/posts/<%= post._id %>/edit" 
+           class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center">
+          <i class="fas fa-edit mr-2"></i> Edit Post
+        </a>
+
+        <!-- Delete Form -->
+        <form method="POST" action="/posts/<%= post._id %>?_method=DELETE" class="inline-block">
+          <button type="submit" 
+                  class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-300">
+            <i class="fas fa-trash mr-2"></i> Delete Post
+          </button>
+        </form>
+      </div>
+      <% } %>
+
+      <!-- Post Title -->
+      <h1 class="text-3xl font-extrabold text-gray-800 mb-4 border-b pb-2">
+        <%= post.title %>
+      </h1>
+
+      <!-- Image with Hover Effect -->
+      <div class="overflow-hidden rounded-md mb-6">
+        <img src="<%= post.image.url %>"
+             alt="Post image"
+             class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-500">
+      </div>
+      <i><%= post.owner.username %></i>
+      <!-- Post Description -->
+      <p class="text-gray-700 leading-relaxed mb-4">
+        <%= post.description %>
+      </p>
+
+      <!-- Post Details (Country, PlaceName, Contact, Email) -->
+      <div class="space-y-4 text-gray-700">
+        <p><i class="fas fa-flag mr-2 text-blue-500"></i> Country: <%= post.country %></p>
+        <p><i class="fas fa-map-marker-alt mr-2 text-green-500"></i> Location: <%= post.location %></p>
+        
+        <!-- Contact Section with Call Link -->
+        <p>
+          <i class="fas fa-phone mr-2 text-yellow-500"></i> Contact:
+          <a href="tel:<%= post.contact %>" 
+             class="text-blue-500 hover:text-blue-700 transition duration-300">
+            <%= post.contact %> <i class="fa-solid fa-phone-volume"></i></i>
+          </a>
+        </p>
+
+        <!-- Email Section with Email Link -->
+        <p>
+          <i class="fas fa-envelope mr-2 text-red-500"></i> Email:
+          <a href="mailto:<%= post.email %>" 
+             class="text-blue-500 hover:text-blue-700 transition duration-300">
+            <%= post.email %> <i class="fas fa-envelope-open-text ml-1"></i>
+          </a>
+        </p>
+      </div>
+     <br><hr><br>
+   
+     <!-- review form -->
+     <div>
+        <form action="/posts/<%=post._id %>/reviews" method="POST" novalidate class="space-y-6">
+            <!-- Rating Field -->
+            <div>
+                <label for="rating" class="block text-gray-700 font-medium mb-2">Rating</label>
+                <fieldset class="flex space-x-2 starability-slot">
+                  <fieldset class="starability-slot">
+                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                  </fieldset>
+                </fieldset>
+            </div>
+
+            <!-- Comment Field -->
+            <div>
+                <label for="comment" class="block text-gray-700 font-medium mb-2">Comments</label>
+                <textarea name="review[comment]" id="comment" cols="30" rows="5" class="w-full h-20 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400" placeholder="Write your comments..." required></textarea>
+                <div class="text-red-500 text-sm hidden">Please submit some comments for review</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-auto bg-gray-800 text-white font-semibold py-2 px-4 rounded hover:bg-gray-700 transition">Submit</button>
+        </form>
+    </div> 
+ 
+    
+    <!-- review section -->
+     <!-- Single Card Container -->
+     <div class="bg-white p-8 rounded-lg shadow-lg">
+      <!-- Header -->
+      <h4 class="text-2xl font-bold text-gray-800 mb-6">All Reviews</h4>
+
+      <!-- Reviews -->
+      <% for (review of post.reviews) { %>
+      <div class="mb-3">
+        <p><%= review.author.username %></p>
+          <!-- Review Comment -->
+          <p class="text-gray-700 text-lg mb-1"><%= review.comment %></p>
+          
+          <!-- Review Rating -->
+          <p class="text-gray-600 font-medium">
+              Rating: 
+              <span class="text-yellow-500 font-bold"><%= review.rating %>/5 stars</span>
+          </p>
+      </div>
+      <% if(currUser && currUser._id.equals(review.author._id)) { %>
+      <form method="post" action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=Delete">
+        <button type="submit" class="w-auto bg-gray-800 text-white font-semibold py-2 px-4 rounded hover:bg-gray-700 transition">Delete</button>
+      </form>
+      <% } %>
+      <hr class="mb-4 mt-4">
+      <% } %>
+  </div>
+
+      <!-- Footer Section -->
+      <div class="mt-6 text-center">
+        <a href="/posts" 
+           class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md shadow-md transition duration-300">
+          <i class="fas fa-arrow-left mr-2"></i> Back to Home
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+

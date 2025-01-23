@@ -1,0 +1,189 @@
+<% layout("layouts/boilerplate") -%>
+<body class="bg-gray-100">
+  <div class="flex items-center justify-center mt-1">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
+        Submit Information
+      </h2>
+
+      <form
+        action="/posts"
+        method="POST"
+        enctype="multipart/form-data"
+        class="space-y-4"
+        id="createForm"
+        novalidate
+      >
+        <!-- Title Field -->
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="post[title]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter title"
+          />
+          <p id="titleError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Contact Field -->
+        <div>
+          <label for="contact" class="block text-sm font-medium text-gray-700">Contact no</label>
+          <input
+            type="text"
+            id="contact"
+            name="post[contact]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter contact no"
+          />
+          <p id="contactError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="post[email]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter email"
+          />
+          <p id="emailError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Availability -->
+        <div>
+          <label for="Availability" class="block text-sm font-medium text-gray-700">Availability</label>
+          <div class="flex items-center space-x-4">
+            <label>
+              <input type="radio" name="post[available]" value="true" checked />
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="post[available]" value="false" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            id="description"
+            name="post[description]"
+            rows="4"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter description"
+          ></textarea>
+          <p id="descriptionError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Image Upload Field -->
+        <div>
+          <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
+          <input
+            type="file"
+            id="image"
+            name="post[image]"
+            accept="image/*"
+            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+          />
+          <p id="imageError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Location Field -->
+        <div>
+          <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+          <input
+            type="text"
+            id="location"
+            name="post[location]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter location"
+          />
+          <p id="locationError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Country Field -->
+        <div>
+          <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+          <select
+            id="country"
+            name="post[country]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="">Select a country</option>
+            <option value="Nepal" selected>Nepal</option>
+          </select>
+          <p id="countryError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Category Field -->
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700">Garage type</label>
+          <select
+            id="category"
+            name="post[category]"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="">Select a Garage type</option>
+            <option value="Bike" selected>Bike</option>
+            <option value="Bus">Bus</option>
+            <option value="Bicycle">Bicycle</option>
+          </select>
+          <p id="categoryError" class="text-sm text-red-500 mt-1"></p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("createForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Get form fields and error message elements
+      const fields = [
+        { id: "title", errorId: "titleError", message: "Title is required." },
+        { id: "contact", errorId: "contactError", message: "Contact number must be a 10-digit number.", pattern: /^[0-9]{10}$/ },
+        { id: "email", errorId: "emailError", message: "Enter a valid email address.", pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+        { id: "description", errorId: "descriptionError", message: "Description is required." },
+        { id: "image", errorId: "imageError", message: "Please upload an image." },
+        { id: "location", errorId: "locationError", message: "Location is required." },
+        { id: "country", errorId: "countryError", message: "Please select a country." },
+        { id: "category", errorId: "categoryError", message: "Please select a garage type." },
+      ];
+
+      let isValid = true;
+
+      fields.forEach((field) => {
+        const input = document.getElementById(field.id);
+        const errorElement = document.getElementById(field.errorId);
+
+        if (!input.value.trim() || (field.pattern && !field.pattern.test(input.value))) {
+          errorElement.textContent = field.message;
+          isValid = false;
+        } else {
+          errorElement.textContent = "";
+        }
+      });
+
+      if (isValid) {
+        document.getElementById("createForm").submit();
+      }
+    });
+  </script>
+</body>
+

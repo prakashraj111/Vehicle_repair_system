@@ -1,0 +1,48 @@
+<% layout("layouts/boilerplate") -%>
+     <!-- Center-align the grid and add responsive margin -->
+     <div class="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
+      <% for(let post of allPosts) { %>
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-2xl">
+          <!-- Image Section -->
+          <img src="<%= post.image.url %>" alt="Service" class="w-full h-48 object-cover">
+
+          <!-- Content Section -->
+          <div class="p-4">
+              <!-- Title with Category Icon and Light Indicator -->
+              <div class="flex items-center justify-between">
+                  <!-- Left: Title and Icon -->
+                  <h3 class="text-lg font-semibold flex items-center">
+                      <% if(post.category === 'Bike') { %>
+                          <i class="fas fa-motorcycle text-blue-500 mr-2"></i>
+                      <% } else if(post.category === 'Bus') { %>
+                          <i class="fas fa-bus text-green-500 mr-2"></i>
+                      <% } else { %>
+                          <i class="fas fa-bicycle text-yellow-500 mr-2"></i>
+                      <% } %>
+                      <%= post.title %>
+                  </h3>
+
+                  <!-- Right: Light Indicator -->
+                  <span>
+                      <span class="inline-block w-4 h-4 rounded-full
+                        <% if(post.available) { %>
+                          bg-green-500 animate-ping
+                        <% } else { %>
+                          bg-black
+                        <% } %>">
+                      </span>
+                  </span>
+              </div>
+
+              <!-- Other Post Details -->
+              <p class="text-gray-700 mt-2"><%= post.country %></p>
+              <p class="text-gray-700"><%= post.location %></p>
+
+              <!-- View More Link -->
+              <a href="/posts/<%= post._id %>" class="mt-2 inline-block text-blue-500 hover:underline">
+                  View More Details
+              </a>
+          </div>
+      </div>
+      <% } %>
+  </div>
