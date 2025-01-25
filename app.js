@@ -8,7 +8,6 @@ const mongoose= require("mongoose");
 const methodOverride = require("method-override");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
-const bodyParser = require("body-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -17,15 +16,16 @@ const User = require("./models/user");
 const multer = require('multer');
 const {isLoggedIn, isOwner, validatePost, validateReview, isReviewAuthor, isAdmin} = require('./middleware.js');
 const { storage } = require('./cloudConfig');
+const { log } = require("console");
 const upload = multer({ storage });
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "/public")));
-app.use(express.urlencoded({extended: true}));
-app.use(bodyParser.urlencoded({ extended: true })); // To parse form data
-app.use(express.json());
+// app.use(express.urlencoded({extended: true}));
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
@@ -101,18 +101,15 @@ app.post(
     wrapAsync(async (req, res) => {
       // Check if file was uploaded
       if (!req.file) {
-        req.flash("error", "Please fill all the fields!");
+        req.flash("error", "Please upload an image!");
         return res.redirect("/posts/new");
-      }
-  
+      } 
       const url = req.file.path;
-      const filename = req.file.filename;
-  
+      const filename = req.file.filename; 
       const newPost = new Post(req.body.post);
       newPost.owner = req.user._id;
       newPost.image = { url, filename };
-      await newPost.save();
-  
+      await newPost.save(); 
       req.flash("success", "New Post Created!");
       res.redirect("/posts");
     })
@@ -126,19 +123,15 @@ app.post("/posts/search", wrapAsync(async (req, res) => {
     const selectedOption = req.body.options;   // Selected category   
     console.log("Search Input:", searchInput);
     console.log("Selected Option:", selectedOption);
-
     // Escape special characters in search input for regex
     const sanitizedSearchInput = searchInput.replace(/[$()*+?.\\^{}|]/g, ''); 
-
     try {
         // Query Database for Matching Posts
         const matchingPosts = await Post.find({
             category: selectedOption,
             location: { $regex: new RegExp(sanitizedSearchInput, "i") }, // Case-insensitive regex for placeName
         });
-
         res.render("./post/searchPage.ejs", { posts: matchingPosts, searchInput, selectedOption });
-
     } catch (err) {
         console.error("Error fetching posts:", err);
         res.status(500).send("Error while searching for posts");
@@ -174,24 +167,15 @@ app.get('/myaccount',isLoggedIn ,wrapAsync (async (req, res)=> {
 app.get("/posts/:id/edit", isLoggedIn, isOwner, wrapAsync (async(req, res) => {
      let {id}= req.params;
      const post = await Post.findById(id);
-     console.log(post.image.url);
      let originalImageUrl = post.image.url;
-    //  originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+     originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
      res.render("./post/edit.ejs", {post, originalImageUrl});
  }));
 
-//update route
-app.put("/posts/:id",isLoggedIn, isOwner, wrapAsync (async(req, res)=> {
-    let {id}= req.params;
-   
-    let post = await Post.findById(id);
-    if (!post) {
-        req.flash("error", "Post not found!");
-        return res.redirect("/posts");
-    }
-
-    // Update the non-image fields in the post
-    post = Object.assign(post, req.body.post);
+ //update route
+app.put("/posts/:id",isLoggedIn, isOwner, upload.single("post[image]") ,wrapAsync (async (req, res)=> {
+    let {id}= req.params;   
+    let post =  await Post.findByIdAndUpdate(id, {...req.body.post});
     if(typeof req.file !== "undefined"){
         let url = req.file.path;
         let filename = req.file.filename;
@@ -201,7 +185,7 @@ app.put("/posts/:id",isLoggedIn, isOwner, wrapAsync (async(req, res)=> {
     }
     req.flash("success", "Post Updated Successfully!");
     res.redirect(`/posts/${id}`);
-})); 
+}));
 
 //delete route
 app.delete("/posts/:id",isLoggedIn,isOwner, wrapAsync(
@@ -319,7 +303,7 @@ app.delete('/users/:id', isLoggedIn, isAdmin, wrapAsync(async (req, res) => {
     const { id } = req.params;
     // Find and delete the user
     const user = await User.findByIdAndDelete(id);
-    // Optional: Delete all posts owned by the user
+    // Delete all posts owned by the user
     await Post.deleteMany({ owner: id });
     req.flash("success", `User ${user.username} and their associated posts have been deleted.`);
     res.redirect('/users');

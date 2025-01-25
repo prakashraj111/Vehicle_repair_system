@@ -148,32 +148,82 @@
 
   <script>
     document.getElementById("updateForm").addEventListener("submit", function (e) {
-      let isValid = true;
-
-      const fields = [
-        { id: "title", error: "titleError" },
-        { id: "contact", error: "contactError", condition: (value) => value.length >= 8 },
-        { id: "email", error: "emailError", condition: (value) => /^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(value) },
-        { id: "description", error: "descriptionError" },
-        { id: "location", error: "locationError" },
-        { id: "country", error: "countryError" },
-        { id: "category", error: "categoryError" },
-      ];
-
-      fields.forEach(({ id, error, condition }) => {
-        const field = document.getElementById(id);
-        const errorElement = document.getElementById(error);
-        const value = field?.value.trim() || "";
-
-        if (!value || (condition && !condition(value))) {
-          isValid = false;
+      e.preventDefault();
+  
+      // Reusable validation function
+      const validateField = (id, errorId, validationFn, message) => {
+        const input = document.getElementById(id);
+        const errorElement = document.getElementById(errorId);
+        const isValid = validationFn(input.value.trim());
+  
+        if (!isValid) {
+          errorElement.textContent = message;
           errorElement.classList.remove("hidden");
+          return false;
         } else {
+          errorElement.textContent = "";
           errorElement.classList.add("hidden");
+          return true;
         }
+      };
+  
+      // Validation rules
+      const validations = [
+        {
+          id: "title",
+          errorId: "titleError",
+          validationFn: (value) => value !== "",
+          message: "Title is required.",
+        },
+        {
+          id: "contact",
+          errorId: "contactError",
+          validationFn: (value) => /^[0-9]{10}$/.test(value),
+          message: "Contact number must be a 10-digit number.",
+        },
+        {
+          id: "email",
+          errorId: "emailError",
+          validationFn: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+          message: "Enter a valid email address.",
+        },
+        {
+          id: "description",
+          errorId: "descriptionError",
+          validationFn: (value) => value !== "",
+          message: "Description is required.",
+        },
+        {
+          id: "location",
+          errorId: "locationError",
+          validationFn: (value) => value !== "",
+          message: "Location is required.",
+        },
+        {
+          id: "country",
+          errorId: "countryError",
+          validationFn: (value) => value !== "",
+          message: "Please select a country.",
+        },
+        {
+          id: "category",
+          errorId: "categoryError",
+          validationFn: (value) => value !== "",
+          message: "Please select a garage type.",
+        },
+      ];
+  
+      // Validate all fields
+      let isFormValid = true;
+      validations.forEach(({ id, errorId, validationFn, message }) => {
+        const isValid = validateField(id, errorId, validationFn, message);
+        if (!isValid) isFormValid = false;
       });
-
-      if (!isValid) e.preventDefault();
+  
+      // Submit form if all validations pass
+      if (isFormValid) {
+        document.getElementById("updateForm").submit();
+      }
     });
   </script>
 </body>
