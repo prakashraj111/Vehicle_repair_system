@@ -176,14 +176,29 @@ app.get("/posts/:id/edit", isLoggedIn, isOwner, wrapAsync (async(req, res) => {
      const post = await Post.findById(id);
      console.log(post.image.url);
      let originalImageUrl = post.image.url;
-     originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250")
+    //  originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
      res.render("./post/edit.ejs", {post, originalImageUrl});
  }));
 
 //update route
-app.put("/posts/:id",isLoggedIn, isOwner, validatePost, wrapAsync (async(req, res)=> {
+app.put("/posts/:id",isLoggedIn, isOwner, wrapAsync (async(req, res)=> {
     let {id}= req.params;
-    await Post.findByIdAndUpdate(id, {...req.body.post});
+   
+    let post = await Post.findById(id);
+    if (!post) {
+        req.flash("error", "Post not found!");
+        return res.redirect("/posts");
+    }
+
+    // Update the non-image fields in the post
+    post = Object.assign(post, req.body.post);
+    if(typeof req.file !== "undefined"){
+        let url = req.file.path;
+        let filename = req.file.filename;
+       
+        post.image = {url, filename};
+        await post.save();
+    }
     req.flash("success", "Post Updated Successfully!");
     res.redirect(`/posts/${id}`);
 })); 

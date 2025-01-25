@@ -30,12 +30,12 @@
       </h1>
 
       <!-- Image with Hover Effect -->
-      <div class="overflow-hidden rounded-md mb-6">
+      <div class="overflow-hidden rounded-md mb-4">
         <img src="<%= post.image.url %>"
              alt="Post image"
              class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-500">
       </div>
-      <i><%= post.owner.username %></i>
+      <!-- <i class="mb-4">owner: <%= post.owner.username %></i> -->
       <!-- Post Description -->
       <p class="text-gray-700 leading-relaxed mb-4">
         <%= post.description %>

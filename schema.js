@@ -19,16 +19,14 @@ module.exports.postSchema = joi.object({
       country: joi.string().required().messages({
         "string.empty": "Country is required."
       }),
-      available: joi.string().required().messages({
-        "string.empty": "Availability is required."
+      available: joi.boolean().required().messages({
+        "any.required": "Availability is required."
       }),
       contact: joi.string().pattern(/^[0-9]{10}$/).required().messages({
         "string.empty": "Contact number is required.",
         "string.pattern.base": "Contact number must be a 10-digit number."
       }),
-      // image: joi.string().required().messages({
-      //   "string.empty": "Availability is required."
-      // }),
+      image: joi.string().allow("", null),
       category: joi.string().required().messages({
         "string.empty": "Category is required."
       })
