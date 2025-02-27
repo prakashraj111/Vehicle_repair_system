@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Review = require("./review.js");
-const { string } = require("joi");
 
 const postSchema = new Schema({
     title: {
@@ -35,13 +34,13 @@ const postSchema = new Schema({
    available: {
     type: Boolean
    },
-   reviews: [
+   rid: [
     {
        type: Schema.Types.ObjectId,
        ref: "Review"
     }
    ],
-    owner: {
+    uid: {
         type: Schema.Types.ObjectId,
         ref: "User",
     },
@@ -53,7 +52,7 @@ postSchema.post("findOneAndDelete", async (post) => {
     if (post) {
         await Review.deleteMany({ _id: { $in: post.reviews } });
     }   
-})
+});
 
 
 const Post = mongoose.model("Post", postSchema);

@@ -26,7 +26,7 @@ module.exports.isOwner = async (req, res, next) => {
             req.flash("error", "You must be logged in to perform this action!");
             return res.redirect(`/posts/${id}`);
         }
-        const isOwner = post.owner.equals(currentUser._id);
+        const isOwner = post.uid.equals(currentUser._id);
         const isAdmin = currentUser.role === 'admin';
 
         if (!isOwner && !isAdmin) {
@@ -44,7 +44,7 @@ module.exports.isOwner = async (req, res, next) => {
 module.exports.isReviewAuthor = async (req, res, next) => {
     let {reviewId} = req.params;
     let review = await Review.findById(reviewId);
-    if(!review.author._id.equals(res.locals.currUser._id)){
+    if(!review.uid._id.equals(res.locals.currUser._id)){
         req.flash("error", "You are not the owner of this review!");
         return res.redirect(`/posts/${id}`);
     }

@@ -6,7 +6,7 @@
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full mx-4 relative border border-gray-200">
       
     
-       <% if(currUser && currUser._id.equals(post.owner._id)) { %>
+       <% if(currUser && currUser._id.equals(post.uid._id)) { %>
       <div class="flex justify-between items-center mb-4">
         <!-- Edit Button -->
         <a href="/posts/<%= post._id %>/edit" 
@@ -35,7 +35,7 @@
              alt="Post image"
              class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-500">
       </div>
-      <!-- <i class="mb-4">owner: <%= post.owner.username %></i> -->
+
       <!-- Post Description -->
       <p class="text-gray-700 leading-relaxed mb-4">
         <%= post.description %>
@@ -109,9 +109,9 @@
       <h4 class="text-2xl font-bold text-gray-800 mb-6">All Reviews</h4>
 
       <!-- Reviews -->
-      <% for (review of post.reviews) { %>
+      <% for (review of post.rid) { %>
       <div class="mb-3">
-        <p><%= review.author.username %></p>
+        <p><%= review.uid.username %></p>
           <!-- Review Comment -->
           <p class="text-gray-700 text-lg mb-1"><%= review.comment %></p>
           
@@ -121,7 +121,7 @@
               <span class="text-yellow-500 font-bold"><%= review.rating %>/5 stars</span>
           </p>
       </div>
-      <% if(currUser && currUser._id.equals(review.author._id)) { %>
+      <% if(currUser && currUser._id.equals(review.uid._id)) { %>
       <form method="post" action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=Delete">
         <button type="submit" class="w-auto bg-gray-800 text-white font-semibold py-2 px-4 rounded hover:bg-gray-700 transition">Delete</button>
       </form>
