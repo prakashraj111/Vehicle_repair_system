@@ -48,6 +48,8 @@ const postSchema = new Schema({
 
 
 
+
+
 postSchema.post("findOneAndDelete", async (post) => {
     if (post) {
         await Review.deleteMany({ _id: { $in: post.reviews } });
